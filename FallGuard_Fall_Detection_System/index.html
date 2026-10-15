@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FallGuard | Fall Detection</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">+</div>
+    <div><h1>FallGuard</h1><p>Camera-based fall monitoring</p></div>
+    <span class="demo-tag">BROWSER DEMO</span>
+  </header>
+
+  <main class="layout">
+    <section class="main-column">
+      <div class="heading-row">
+        <div><p class="eyebrow">LIVE MONITOR</p><h2>Fall detection dashboard</h2></div>
+        <div id="systemStatus" class="status-pill idle"><span></span> Not started</div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-head"><span><span class="live-dot"></span> Camera feed</span><span id="fpsLabel">Waiting for camera</span></div>
+        <div class="video-stage">
+          <video id="inputVideo" playsinline></video>
+          <canvas id="outputCanvas"></canvas>
+          <div id="cameraPlaceholder" class="camera-placeholder">
+            <div class="camera-icon">◉</div>
+            <h3>Camera preview</h3>
+            <p>Start monitoring and allow camera access.</p>
+          </div>
+          <div id="fallOverlay" class="fall-overlay hidden">
+            <strong>FALL SUSPECTED</strong><span>Check the person immediately</span>
+          </div>
+        </div>
+        <div class="video-controls">
+          <button id="startBtn" class="btn btn-primary">▶ Start monitoring</button>
+          <button id="stopBtn" class="btn btn-secondary" disabled>■ Stop</button>
+          <button id="testBtn" class="btn btn-quiet">Run test alert</button>
+        </div>
+        <p class="privacy-note">Processing is performed in this browser. Video is not uploaded by this demo.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <article class="metric-card"><span class="metric-icon purple">⌁</span><p>Pose confidence</p><strong id="confidenceValue">—</strong><small>Estimated from visible landmarks</small></article>
+        <article class="metric-card"><span class="metric-icon blue">↗</span><p>Body orientation</p><strong id="orientationValue">—</strong><small>Torso angle estimate</small></article>
+        <article class="metric-card"><span class="metric-icon orange">◷</span><p>Alert countdown</p><strong id="countdownValue">—</strong><small>Confirmation window</small></article>
+      </div>
+    </section>
+
+    <aside class="side-column">
+      <section class="panel alert-panel">
+        <div class="panel-title"><h3>Current status</h3><span id="statusIcon" class="status-icon">✓</span></div>
+        <div id="alertState" class="alert-state">Monitoring is off</div>
+        <p id="alertDescription">Start the camera to analyze pose landmarks and watch for possible falls.</p>
+        <button id="ackBtn" class="btn btn-danger hidden">Acknowledge alert</button>
+        <button id="cancelBtn" class="btn btn-secondary hidden">False alarm / Cancel</button>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title"><h3>Detection settings</h3><span class="gear">⚙</span></div>
+        <label class="setting-label" for="sensitivity">Sensitivity <strong id="sensitivityText">Balanced</strong></label>
+        <input id="sensitivity" type="range" min="1" max="3" value="2">
+        <div class="range-labels"><span>Conservative</span><span>More sensitive</span></div>
+        <label class="setting-label" for="countdownSetting">Alert delay</label>
+        <select id="countdownSetting">
+          <option value="3">3 seconds</option><option value="5" selected>5 seconds</option><option value="8">8 seconds</option>
+        </select>
+        <label class="check-row"><input id="soundToggle" type="checkbox" checked> Play sound for suspected falls</label>
+        <p class="hint">Adjustments change the demo's heuristic thresholds. Test carefully with a safe, controlled setup.</p>
+      </section>
+
+      <section class="panel event-panel">
+        <div class="panel-title"><h3>Recent events</h3><button id="clearLog" class="text-button">Clear</button></div>
+        <ul id="eventLog" class="event-log"><li class="empty-log">No events yet.</li></ul>
+      </section>
+      <div class="safety-card"><strong>Important safety note</strong><p>This is an experimental browser demo, not a certified medical or emergency system. It can miss falls or trigger false alarms. Do not rely on it as the only means of protection.</p></div>
+    </aside>
+  </main>
+  <footer>FallGuard demo · Keep the camera unobstructed · Use a well-lit space</footer>
+  <script src="app.js"></script>
+</body>
+</html>
