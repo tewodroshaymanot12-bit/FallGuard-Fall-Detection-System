@@ -20,3 +20,4 @@ Internet is required to load MediaPipe libraries from jsDelivr. Camera access us
 
 ## Important limitations
 This is a learning/demo project, not a validated fall-detection or medical safety product. The current heuristic can produce false positives and false negatives, especially when the person is partly out of frame, lying down intentionally, or viewed from an unusual angle. It does not call emergency services. Do not use it as the only safety measure.
+Learning Git commands for the FallGuard project.
